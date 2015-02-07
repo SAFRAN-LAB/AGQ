@@ -26,3 +26,7 @@
 *.exe
 *.out
 *.app
+
+# Tex files
+*.aux
+*.log
