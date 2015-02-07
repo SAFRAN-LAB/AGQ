@@ -3,6 +3,7 @@ Adaptive Gaussian Quadrature in 1D and 2D
 
 Adaptive Gaussian quadrature in 1D and 2D. Gauss-Legendre quadrature is used on each panel. Each panel is adaptively sub-divided till convergence of the quadrature on each panel is reached.
 
+---
 AGQ on interval:
 ---
 
@@ -16,6 +17,7 @@ To run the AGQ in 1D on an interval:
 
 The driver file is ./examples/test1D.cpp.
 
+---
 AGQ on rectangle:
 ---
 
