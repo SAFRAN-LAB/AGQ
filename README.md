@@ -1,7 +1,7 @@
 Adaptive Gaussian Quadrature in 1D and 2D
 ===
 
-Adaptive Gaussian quadrature in 1D and 2D. Gauss-Legendre quadrature is used on each panel. Each panel is adaptively sub-divided till convergence of the quadrature on each panel is reached.
+Adaptive Gaussian quadrature in 1D and 2D. Gauss-Legendre quadrature is used on each panel. Each panel is adaptively sub-divided till convergence of the quadrature (to the desired precision) on each panel is reached.
 
 ---
 AGQ on interval:
