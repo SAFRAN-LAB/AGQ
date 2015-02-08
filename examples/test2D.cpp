@@ -6,29 +6,30 @@
 
 class myDomain : public domain2D {
 public:
-	myDomain(double xcenter, double ycenter, double Lx, double Ly, int nNodes) {
+	myDomain(long double xcenter, long double ycenter, long double Lx, long double Ly, int nNodes) {
 		this->xcenter	=	xcenter;
 		this->ycenter	=	ycenter;
 		this->Lx		=	Lx;
 		this->Ly		=	Ly;
 		this->nNodes	=	nNodes;
-	}
-	double integrand(double x, double y) {
+	};
+	long double integrand(long double x, long double y) {
 		return log(x*x+y*y)+1.0/sqrt((x-1)*(x-1)+(y-1)*(y-1));
-	}
+	};
+	~myDomain() {};
 };
 
 int main() {
-	double xcenter	=	0.0;	//	'x' coordinate of the center of the domain
-	double ycenter	=	0.0;	//	'y' coordinate of the center of the domain
-	double Lx		=	3.0;	//	Semi-length of the domain along X axis
-	double Ly		=	4.0;	//	Semi-length of the domain along Y axis
+	long double xcenter	=	0.0;	//	'x' coordinate of the center of the domain
+	long double ycenter	=	0.0;	//	'y' coordinate of the center of the domain
+	long double Lx		=	3.0;	//	Semi-length of the domain along X axis
+	long double Ly		=	4.0;	//	Semi-length of the domain along Y axis
 	int nNodes		=	6;		//	Nodes of integration along one dimension for each panel
 
 	// std::cout << std::endl << mine->integrand(1.0,1.0) << std::endl;
-	double epsilon	=	1e-15;	//	Accuracy of the quadrature
-	double start, end;
-	double CPS		=	CLOCKS_PER_SEC;
+	long double epsilon	=	1e-15;	//	Accuracy of the quadrature
+	long double start, end;
+	long double CPS		=	CLOCKS_PER_SEC;
 	start	=	clock();
 	myDomain* mine	=	new myDomain(xcenter, ycenter, Lx, Ly, nNodes);
 	mine->obtain_Quadrature(epsilon);
@@ -40,4 +41,5 @@ int main() {
 	std::cout << std::endl << "Number of levels of adaptivity: " << mine->tree.size() << std::endl;
 	std::cout << std::endl << "Time taken: " << (end-start)/CPS << " seconds" << std::endl;
 	mine->outputAdaptiveGrid("Domain2D.tex");
+	delete mine;
 }

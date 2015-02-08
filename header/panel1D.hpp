@@ -1,14 +1,17 @@
 class panel1D{
 public:
-	double integral;
-	double xcenter;
-	double xradius;
-	double* xNodes;
+	long double integral;
+	long double xcenter;
+	long double xradius;
+	long double* xNodes;
 	bool isLeaf;
-	panel1D(double xcenter, double xradius){
+	panel1D(long double xcenter, long double xradius){
 		this->xcenter	=	xcenter;
 		this->xradius	=	xradius;
 		this->isLeaf	=	false;
 		this->integral	=	0.0;
+	}
+	~panel1D() {
+		delete[] xNodes;
 	}
 };

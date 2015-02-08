@@ -6,24 +6,25 @@
 
 class myDomain : public domain1D {
 public:
-	myDomain(double xcenter, double Lx, int nNodes) {
+	myDomain(long double xcenter, long double Lx, int nNodes) {
 		this->xcenter	=	xcenter;
 		this->Lx		=	Lx;
 		this->nNodes	=	nNodes;
-	}
-	double integrand(double x) {
+	};
+	long double integrand(long double x) {
 		return 1.0/pow(x,0.5) + log(fabs(x-xcenter));
-	}
+	};
+	~myDomain() {};
 };
 
 int main() {
-	double xcenter	=	3.0;	//	'x' coordinate of the center of the domain
-	double Lx		=	3.0;	//	Semi-length of the domain along X axis
+	long double xcenter	=	3.0;	//	'x' coordinate of the center of the domain
+	long double Lx		=	3.0;	//	Semi-length of the domain along X axis
 	int nNodes		=	6;		//	Nodes of integration along one dimension for each panel
 	// std::cout << std::endl << mine->integrand(1.0,1.0) << std::endl;
-	double epsilon	=	1e-15;	//	Accuracy of the quadrature
-	double start, end;
-	double CPS		=	CLOCKS_PER_SEC;
+	long double epsilon	=	1e-15;	//	Accuracy of the quadrature
+	long double start, end;
+	long double CPS		=	CLOCKS_PER_SEC;
 	start	=	clock();
 	myDomain* mine	=	new myDomain(xcenter, Lx, nNodes);
 	mine->obtain_Quadrature(epsilon);
@@ -35,4 +36,5 @@ int main() {
 	std::cout << std::endl << "Number of levels of adaptivity: " << mine->tree.size() << std::endl;
 	std::cout << std::endl << "Time taken: " << (end-start)/CPS << " seconds" << std::endl;
 	mine->outputAdaptiveGrid("Domain1D.tex");
+	delete mine;
 }

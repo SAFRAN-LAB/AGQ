@@ -7,26 +7,32 @@
 
 class domain2D {
 public:
-	double xcenter;
-	double ycenter;
-	double Lx;
-	double Ly;
-	double integral;
-	double epsilon;
+	long double xcenter;
+	long double ycenter;
+	long double Lx;
+	long double Ly;
+	long double integral;
+	long double epsilon;
 	int nMaxLevels;
 	std::vector< std::vector<panel2D*> > tree;
 	std::vector<panel2D*> leafNodes;
 	int nNodes;
 	long double* nodes;
 	long double* weights;
-	virtual double integrand(double x, double y) {
+	virtual long double integrand(long double x, long double y) {
 		return 0.0;
 	};
 	domain2D() {};
-	~domain2D() {};
+	virtual ~domain2D() {
+		leafNodes.clear();
+		for (int j=tree.size()-1; j>=0; --j) {
+			tree[j].clear();
+		}
+		tree.clear();
+	};
 	void panel2DNodes(int j, int k) {
-		tree[j][k]->xNodes	=	new double[nNodes];
-		tree[j][k]->yNodes	=	new double[nNodes];
+		tree[j][k]->xNodes	=	new long double[nNodes];
+		tree[j][k]->yNodes	=	new long double[nNodes];
 		for (int l=0; l<nNodes; ++l) {
 			tree[j][k]->xNodes[l]	=	tree[j][k]->xcenter	+	tree[j][k]->xradius*nodes[l];
 			tree[j][k]->yNodes[l]	=	tree[j][k]->ycenter	+	tree[j][k]->yradius*nodes[l];
@@ -50,8 +56,8 @@ public:
 		nMaxLevels	=	0;
 	}
 	void create_Tree(int j, int k) {
-		double xradius	=	0.5*tree[j][k]->xradius;
-		double yradius	=	0.5*tree[j][k]->yradius;
+		long double xradius	=	0.5*tree[j][k]->xradius;
+		long double yradius	=	0.5*tree[j][k]->yradius;
         //      Create children of node. The children are numbered as shown below.
         /************************/
         //       ___________    //
@@ -86,7 +92,7 @@ public:
 		tree[j+1].push_back(child3);
 		panel2DNodes(j+1,n+3);
 		panel2DIntegral(j+1,n+3);
-		double error	=	tree[j][k]->integral;
+		long double error	=	tree[j][k]->integral;
 		for (int l=0;l<4;++l) {
 			error-=tree[j+1][n+l]->integral;
 		}
@@ -100,7 +106,7 @@ public:
 			}
 		}
 	}
-	void obtain_Quadrature(double epsilon) {
+	void obtain_Quadrature(long double epsilon) {
 		Gauss_Legendre_Nodes_and_Weights(nNodes, nodes, weights);
 		this->epsilon	=	epsilon;
 		create_Root();
@@ -123,7 +129,7 @@ public:
 			myfile << leafNodes[k]->xcenter+leafNodes[k]->xradius << ",";
 			myfile << leafNodes[k]->ycenter+leafNodes[k]->yradius << ");" << std::endl;
 		}
-		double push	=	0.125;
+		long double push	=	0.125;
 		myfile<< "\\node at (" << xcenter-Lx-push << "," << ycenter-Ly-push << ") {\\tiny$(" << xcenter-Lx << "," << ycenter-Ly << ")$};" << std::endl;
 		myfile<< "\\node at (" << xcenter-Lx-push << "," << ycenter+Ly+push << ") {\\tiny$(" << xcenter-Lx << "," << ycenter+Ly << ")$};" << std::endl;
 		myfile<< "\\node at (" << xcenter+Lx+push << "," << ycenter-Ly-push << ") {\\tiny$(" << xcenter+Lx << "," << ycenter-Ly << ")$};" << std::endl;

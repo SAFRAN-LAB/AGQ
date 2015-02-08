@@ -7,23 +7,29 @@
 
 class domain1D {
 public:
-	double xcenter;
-	double Lx;
-	double integral;
-	double epsilon;
+	long double xcenter;
+	long double Lx;
+	long double integral;
+	long double epsilon;
 	int nMaxLevels;
 	std::vector< std::vector<panel1D*> > tree;
 	std::vector<panel1D*> leafNodes;
 	int nNodes;
 	long double* nodes;
 	long double* weights;
-	virtual double integrand(double x) {
+	virtual long double integrand(long double x) {
 		return 0.0;
 	};
 	domain1D() {};
-	~domain1D() {};
+	virtual ~domain1D() {
+		leafNodes.clear();
+		for (int j=tree.size()-1; j>=0; --j) {
+			tree[j].clear();
+		}
+		tree.clear();
+	};
 	void panel1DNodes(int j, int k) {
-		tree[j][k]->xNodes	=	new double[nNodes];
+		tree[j][k]->xNodes	=	new long double[nNodes];
 		for (int l=0; l<nNodes; ++l) {
 			tree[j][k]->xNodes[l]	=	tree[j][k]->xcenter	+	tree[j][k]->xradius*nodes[l];
 		}
@@ -44,7 +50,7 @@ public:
 		nMaxLevels	=	0;
 	}
 	void create_Tree(int j, int k) {
-		double xradius	=	0.5*tree[j][k]->xradius;
+		long double xradius	=	0.5*tree[j][k]->xradius;
         //      Create children of node. The children are numbered as shown below.
         /************************/
         //						//
@@ -67,7 +73,7 @@ public:
 		tree[j+1].push_back(child1);
 		panel1DNodes(j+1,n+1);
 		panel1DIntegral(j+1,n+1);
-		double error	=	tree[j][k]->integral;
+		long double error	=	tree[j][k]->integral;
 		for (int l=0;l<2;++l) {
 			error-=tree[j+1][n+l]->integral;
 		}
@@ -81,7 +87,7 @@ public:
 			}
 		}
 	}
-	void obtain_Quadrature(double epsilon) {
+	void obtain_Quadrature(long double epsilon) {
 		Gauss_Legendre_Nodes_and_Weights(nNodes, nodes, weights);
 		this->epsilon	=	epsilon;
 		create_Root();
@@ -98,7 +104,7 @@ public:
 		myfile << "\\usepackage{tikz}" << std::endl;
 		myfile << "\\begin{document}" << std::endl;
 		myfile << "\\begin{tikzpicture}" << std::endl;
-		double push	=	0.125;
+		long double push	=	0.125;
 		myfile << "\\draw[red](" << xcenter-Lx << ",0)--(" << xcenter+Lx << ",0);";
 		for (int k=0; k<(int)leafNodes.size(); ++k) {
 			myfile << "\\draw [ultra thin] (" << leafNodes[k]->xcenter-leafNodes[k]->xradius << "," << -push << ")";
